@@ -3,11 +3,14 @@
   dnf: name={{ item }} state=present
   with_items:
     - gcc
+    - bzip2
     - openssl-devel
     - libyaml-devel
+    - libffi-devel
     - readline-devel
     - zlib-devel
-    - libffi-devel
+    - gdbm-devel
+    - ncurses-devel
     - git
   become: true
   tags:
