@@ -8,8 +8,8 @@ galaxy_info:
     - name: EL
       versions:
        # - 5
-       - 6
-       - 7
+        - 6
+        - 7
     # - name: Ubuntu
     #   versions:
     #     # - lucid    # 10.04 ## package is named git-core 10.04... also geerlingguy.git doesn't support 10.04 either
