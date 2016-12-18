@@ -1,0 +1,112 @@
+---
+- include: apt_build_depends.yml
+  when: ansible_pkg_mgr == 'apt'
+- include: yum_build_depends.yml
+  when: ansible_pkg_mgr == 'yum'
+- include: dnf_build_depends.yml
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Check if the users exist
+  shell: "getent passwd {{ item }}"
+  with_items: "{{ rbenv_users }}"
+  become: yes
+
+- name: Install rbenv for selected users
+  git:
+    repo: "{{ rbenv_repo }}"
+    dest: "{{ rbenv_root }}"
+    accept_hostkey: yes
+    force: yes
+  with_items: "{{ rbenv_users }}"
+  become: yes
+  become_user: "{{ item }}"
+
+- name: Create plugins directory for selected users
+  file: state=directory path={{ rbenv_root }}/plugins
+  with_items: "{{ rbenv_users }}"
+  become: yes
+  become_user: "{{ item }}"
+
+- name: Install plugins for selected users
+  git:
+    repo: "{{ item[1].repo }}"
+    dest: "{{ rbenv_root }}/plugins/{{ item[1].name }}"
+    accept_hostkey: yes
+    force: yes
+  with_nested:
+    - "{{ rbenv_users }}"
+    - "{{ rbenv_plugins }}"
+  become: yes
+  become_user: "{{ item[0] }}"
+
+- name: Add rbenv initialization to profile system-wide
+  template:
+    src: rbenv_user.sh.j2
+    dest: /etc/profile.d/rbenv.sh
+    owner: root
+    group: root
+    mode: 0755
+  become: yes
+
+- name: Set default-gems for select users
+  copy:
+    src=default-gems
+    dest={{ rbenv_root }}/default-gems
+  with_items: "{{ rbenv_users }}"
+  become: yes
+  become_user: "{{ item }}"
+  when:
+    - default_gems_file is not defined
+  ignore_errors: yes
+
+- name: Set custom default-gems for select users
+  copy:
+    src={{ default_gems_file }}
+    dest={{ rbenv_root }}/default-gems
+  with_items: "{{ rbenv_users }}"
+  become: yes
+  become_user: "{{ item.name }}"
+  when:
+    - default_gems_file is defined
+  ignore_errors: yes
+
+- name: Set gemrc for select users
+  copy: src=gemrc dest=~/.gemrc
+  with_items: "{{ rbenv_users }}"
+  become: yes
+  become_user: "{{ item }}"
+  ignore_errors: yes
+  tags:
+    - rbenv
+
+- name: Set vars for select users
+  copy: src=vars dest={{ rbenv_root }}/vars
+  with_items: "{{ rbenv_users }}"
+  become: yes
+  become_user: "{{ item }}"
+
+
+# Become the one of the rbenv_users to use rbenv command
+- name: Get the latest version for 'x' in version string
+  script: get_latest_version.sh {{ rbenv_profile_path }} {{ item }}
+  with_items: "{{ rbenv_ruby_versions }}"
+  become: yes
+  become_user: "{{ rbenv_users[0] }}"
+  register: latest_versions
+- debug: var=latest_versions
+- name: Set rbenv_ruby_versions_mod to replace version strings
+  set_fact:
+    rbenv_ruby_versions_mod: "{{ rbenv_ruby_versions_mod|default([]) + [ item.stdout_lines[0] ] }}"
+  with_items: "{{ latest_versions.results }}"
+- debug: var=rbenv_ruby_versions_mod
+
+- name: Install Ruby interpreters {{ rbenv_ruby_versions_mod }} for select users
+  shell: $SHELL -lc "rbenv install {{ item[1] }}"
+  args:
+    creates: "{{ rbenv_root }}/versions/{{ item[1] }}/bin/ruby"
+  become: yes
+  become_user: "{{ item[0] }}"
+  with_nested:
+    - "{{ rbenv_users }}"
+    - "{{ rbenv_ruby_versions_mod }}"
+
