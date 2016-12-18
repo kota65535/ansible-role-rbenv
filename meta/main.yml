@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Tomohiko Ozawa
-  description: rbenv
+  description: Ansible role for rbenv (https://github.com/kota65535/rbenv).
   license: MIT
 
   platforms:
@@ -25,3 +25,5 @@ galaxy_info:
     - system
 
 dependencies: []
+notifications:
+    webhooks: https://galaxy.ansible.com/api/v1/notifications/

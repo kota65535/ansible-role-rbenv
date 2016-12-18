@@ -1,4 +1,4 @@
-rbenv
+kota65535.rbenv
 ========
 
 Ansible role for installing [rbenv](https://github.com/sstephenson/rbenv).
@@ -18,7 +18,6 @@ Dependencies
 ------------
 
 none
-
 
 Role Variables
 --------------
