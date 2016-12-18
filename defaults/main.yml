@@ -1,8 +1,11 @@
 ---
-rbenv_ruby_versions: []
+rbenv_users: ["{{ ansible_env.USER }}"]
+rbenv_ruby_versions: ["2.x.x"]
+
+rbenv_root: "~/.rbenv"
+rbenv_profile_path: /etc/profile.d/rbenv.sh
 
 rbenv_repo: "https://github.com/rbenv/rbenv.git"
-
 rbenv_plugins:
   - name: "rbenv-vars"
     repo: "https://github.com/rbenv/rbenv-vars.git"
@@ -19,8 +22,3 @@ rbenv_plugins:
   - name: "rbenv-use"
     repo: "https://github.com/rkh/rbenv-use.git"
 
-rbenv_root: "~/.rbenv"
-rbenv_users: ["{{ ansible_env.USER }}"]
-rbenv_owner: ["{{ ansible_env.USER }}"]
-rbenv_tmpdir: "{{ lookup('env', 'TMPDIR') }}"
-rbenv_profile_path: /etc/profile.d/rbenv.sh
