@@ -1,6 +1,8 @@
 kota65535.rbenv
 ========
 
+[![Build Status](https://travis-ci.org/kota65535/ansible-role-rbenv.svg?branch=master)](https://travis-ci.org/kota65535/ansible-role-rbenv)
+
 Ansible role for installing [rbenv](https://github.com/sstephenson/rbenv).
 
 Install it with the following command:
@@ -8,11 +10,6 @@ Install it with the following command:
 ```bash
 $ ansible-galaxy install kota65535.rbenv
 ```
-
-Role ready status
-------------
-
-[![Build Status](https://travis-ci.org/kota65535/ansible-role-rbenv.svg?branch=master)](https://travis-ci.org/kota65535/ansible-role-rbenv)
 
 Dependencies
 ------------
