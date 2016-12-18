@@ -39,7 +39,7 @@ rbenv_users: ["{{ ansible_env.USER }}"]
 rbenv_ruby_versions: ["2.x.x"]
 
 rbenv_root: "~/.rbenv"
-rbenv_profile_path: /etc/profile.d/rbenv.sh
+rbenv_profile_path: "/etc/profile.d/rbenv.sh"
 
 rbenv_repo: "https://github.com/rbenv/rbenv.git"
 rbenv_plugins:
@@ -47,8 +47,8 @@ rbenv_plugins:
     repo: "https://github.com/rbenv/rbenv-vars.git"
   - name: "ruby-build"
     repo: "https://github.com/rbenv/ruby-build.git"
-  - name:  "rbenv-default-gems"
-    repo:  "https://github.com/rbenv/rbenv-default-gems.git"
+  - name: "rbenv-default-gems"
+    repo: "https://github.com/rbenv/rbenv-default-gems.git"
   - name: "rbenv-installer"
     repo: "https://github.com/rbenv/rbenv-installer.git"
   - name: "rbenv-update"
