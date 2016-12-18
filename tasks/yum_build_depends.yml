@@ -2,6 +2,7 @@
 - name: install build depends
   yum: name={{ item }} state=present
   with_items:
+    - make
     - gcc
     - bzip2
     - openssl-devel
