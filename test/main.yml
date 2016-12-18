@@ -7,7 +7,7 @@
 - hosts: all
   vars:
     rbenv_ruby_versions:
-      - 1.9.1
+      - 2.0.0
       - 2.3.x
     rbenv_users:
       - test01
