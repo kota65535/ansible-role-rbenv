@@ -88,10 +88,9 @@
 
 # Become the one of the rbenv_users to use rbenv command
 - name: Get the latest version for 'x' in version string
-  script: get_latest_version.sh {{ rbenv_profile_path }} {{ item }}
+  script: get_latest_version.sh {{ rbenv_repo }} {{ rbenv_plugins[0].repo }} {{ item }}
   with_items: "{{ rbenv_ruby_versions }}"
   become: yes
-  become_user: "{{ rbenv_users[0] }}"
   register: latest_versions
 - debug: var=latest_versions
 - name: Set rbenv_ruby_versions_mod to replace version strings
@@ -108,5 +107,5 @@
   become_user: "{{ item[0] }}"
   with_nested:
     - "{{ rbenv_users }}"
-    - "{{ rbenv_ruby_versions_mod }}"
+    - "{{ rbenv_ruby_versions_mod|default([]) }}"
 
