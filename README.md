@@ -3,7 +3,7 @@ kota65535.rbenv
 
 [![Build Status](https://travis-ci.org/kota65535/ansible-role-rbenv.svg?branch=master)](https://travis-ci.org/kota65535/ansible-role-rbenv)
 
-Ansible role for installing [rbenv](https://github.com/sstephenson/rbenv).
+Ansible role for installing [rbenv](https://github.com/sstephenson/rbenv) on RHEL and Ubuntu.
 
 Install it with the following command:
 
@@ -22,11 +22,13 @@ Role Variables
 Role variables you may want to change:
 
 * `rbenv_users` - Array of usernames for multiuser install. User must be present in the system
-* `rbenv.ruby_versions` - Ruby versions to be installed. You can use 'x' to represent the latest version number.
+* `rbenv_ruby_versions` - Ruby versions to be installed. You can use 'x' to represent the latest version number.
 * `rbenv_root` - Install path of rbenv
 * `rbenv_profile_path`: Install path of rbenv initialization script
 * `rbenv_plugins` - Array of Hashes with information about plugins to install
 * `default_gems_file` - This is Rbenv's plugin _rbenv-default-gems_. Sets the path to a default-gems file of your choice (_don't set it_ if you want to use the default file `files/default-gems`)
+
+You can use `x` as the latest version number to specify ruby version (ex. `2.3.x`).
 
 The default values:
 
