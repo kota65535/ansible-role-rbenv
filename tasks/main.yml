@@ -7,7 +7,7 @@
   when: ansible_pkg_mgr == 'dnf'
 
 - name: Check if the users exist
-  shell: "getent passwd {{ item }}"
+  shell: "id {{ item }}"
   with_items: "{{ rbenv_users }}"
   become: yes
 
@@ -39,14 +39,27 @@
   become: yes
   become_user: "{{ item[0] }}"
 
-- name: Add rbenv initialization to profile system-wide
-  template:
+- name: Check if {{ rbenv_profile_path }} exists
+  stat: path={{ rbenv_profile_path }}
+  register: profile_path
+  failed_when: not profile_path.stat.exists
+- debug: var=profile_path
+
+- set_fact:
+    rbenv_profile_owner: "{{ rbenv_users }}"
+  when: rbenv_profile_owner is not defined
+
+- name: Add rbenv initialization lines to {{ rbenv_profile_path }}
+  blockinfile:
     src: rbenv_user.sh.j2
-    dest: /etc/profile.d/rbenv.sh
-    owner: root
-    group: root
-    mode: 0755
+    dest: "{{ rbenv_profile_path }}"
+    owner: "{{ item }}"
+    # group: root
+    mode: 0644
+    create: yes
   become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ rbenv_profile_owner }}"
 
 - name: Set default-gems for select users
   copy:
@@ -92,6 +105,7 @@
   with_items: "{{ rbenv_ruby_versions }}"
   become: yes
   register: latest_versions
+  changed_when: no
 - debug: var=latest_versions
 - name: Set rbenv_ruby_versions_mod to replace version strings
   set_fact:
