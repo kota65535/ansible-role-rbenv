@@ -1,6 +1,7 @@
 ---
 rbenv_ruby_versions: []
 rbenv_root: "~/.rbenv"
+
 rbenv_repo: "https://github.com/rbenv/rbenv.git"
 rbenv_plugins:
   - name: "ruby-build"

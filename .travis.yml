@@ -19,6 +19,11 @@ script:
   - container_id=$(mktemp)
   # Run container in detached state.
   - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/kota65535.pyenv:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum install -y epel-release'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum install -y ansible'
+
+  # Debug
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible -m setup -i "localhost" -c local all'
 
   # Ansible syntax check.
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/kota65535.pyenv/test/main.yml --syntax-check -vvvv'
@@ -28,7 +33,7 @@ script:
   - 'docker exec "$(cat ${container_id})" env TERM=xterm useradd test02'
 
   # Test role.
-  - 'docker exec "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/kota65535.pyenv/test/main.yml -i /etc/ansible/roles/kota65535.pyenv/test/inventory -c local --become -vvvv'
+  - 'docker exec "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/kota65535.pyenv/test/main.yml -i /etc/ansible/roles/kota65535.pyenv/test/inventory -c local -vvvv'
 
 notifications:
     webhooks: https://galaxy.ansible.com/api/v1/notifications/

@@ -1,12 +1,12 @@
 ---
-- hosts: all
-  vars:
-    rbenv_ruby_versions:
-      - 2.1.10
-      - 2.4.X
-    rbenv_profile_path: ~/.bashrc
-  roles:
-    - kota65535.rbenv
+# - hosts: all
+#   vars:
+#     rbenv_ruby_versions:
+#       - 2.1.10
+#       - 2.4.X
+#     rbenv_profile_path: ~/.bashrc
+#   roles:
+#     - kota65535.rbenv
 
 - hosts: all
   vars:
@@ -14,5 +14,8 @@
       - jruby-9.X.X.X
     rbenv_profile_path: /etc/profile.d/rbenv.sh
     rbenv_profile_owner: root
+    rbenv_users:
+      - test01
+      - test02
   roles:
     - kota65535.rbenv
