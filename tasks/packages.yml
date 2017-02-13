@@ -1,0 +1,55 @@
+- name: Install development packages to compile Ruby versions (RedHat)
+  yum: name={{ item }} state=present
+  with_items:
+    - make
+    - gcc
+    - bzip2
+    - openssl-devel
+    - libyaml-devel
+    - libffi-devel
+    - readline-devel
+    - zlib-devel
+    - gdbm-devel
+    - ncurses-devel
+    - git
+    - perl-Sort-Versions
+  become: true
+  when: ansible_pkg_mgr == 'yum'
+
+- name: Install development packages to compile Ruby versions (Fedora)
+  dnf: name={{ item }} state=present
+  with_items:
+    - autoconf
+    - gcc
+    - bzip2
+    - openssl-devel
+    - libyaml-devel
+    - libffi-devel
+    - readline-devel
+    - zlib-devel
+    - gdbm-devel
+    - ncurses-devel
+    - git
+    - perl-Sort-Versions
+  become: true
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Install development packages to compile Ruby versions (Debian)
+  apt: pkg={{ item }} state=present install_recommends=no update_cache=yes
+  with_items:
+    - autoconf
+    - bison
+    - build-essential
+    - git
+    - libssl-dev
+    - libyaml-dev
+    - libreadline6-dev
+    - zlib1g-dev
+    - libncurses5-dev
+    - libffi-dev
+    - libgdbm3
+    - libgdbm-dev
+    - libsort-versions-perl
+  become: true
+  when: ansible_pkg_mgr == 'apt'
+
