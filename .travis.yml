@@ -21,6 +21,7 @@ script:
   - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/kota65535.rbenv:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum install -y epel-release'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum install -y ansible'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum install -y java-1.8.0-openjdk'
 
   # Debug
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible -m setup -i "localhost" -c local all'

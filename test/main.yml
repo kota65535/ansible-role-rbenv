@@ -11,7 +11,7 @@
 - hosts: all
   vars:
     rbenv_ruby_versions:
-      - rbx-3.X
+      - jruby-9.X.X.X
     rbenv_profile_path: /etc/profile.d/rbenv.sh
     rbenv_profile_owner: root
     rbenv_users:
