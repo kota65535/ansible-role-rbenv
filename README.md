@@ -14,17 +14,17 @@ $ ansible-galaxy install kota65535.rbenv
 Dependencies
 ------------
 
-none
+- ansible >= 2.2.1
 
 Role Variables
 --------------
 
 Role variables you may want to change:
 
-* `rbenv_users` - Array of usernames for multiuser install. User must be present in the system
-* `rbenv_ruby_versions` - Ruby versions to be installed. You can use 'x' to represent the latest version number.
-* `rbenv_root` - Install path of rbenv
-* `rbenv_profile_path`: Install path of rbenv initialization script
+* `rbenv_users` - Array of usernames for multiuser install. If not specified, ansible ssh user is used.
+* `rbenv_ruby_versions` - Ruby versions to be installed. You can use 'X' to represent the latest version number.
+* `rbenv_root` - Install path of rbenv.
+* `rbenv_profile_path`: The location of rbenv initialization script.
 * `rbenv_plugins` - Array of Hashes with information about plugins to install
 * `default_gems_file` - This is Rbenv's plugin _rbenv-default-gems_. Sets the path to a default-gems file of your choice (_don't set it_ if you want to use the default file `files/default-gems`)
 
@@ -54,19 +54,64 @@ rbenv_plugins:
 ```
 
 
-Example Playbook
+Example Playbooks
 -------------------------
 
-    - hosts: all
-      vars:
-        rbenv_ruby_versions:
-          - 2.0.0
-          - 2.3.X
-        rbenv_users:
-          - test01
-          - test02
-      roles:
-        - kota65535.rbenv
+### 1. Personal setup
+
+- Install rbenv for me only
+- Install ruby 2.1.10 and the latest version of 2.4
+- Add lines to ~/.bashrc to initialize pyenv
+
+```
+- hosts: all
+  vars:
+    rbenv_ruby_versions:
+      - 2.1.10
+      - 2.4.X
+    rbenv_profile_path: ~/.bashrc
+  roles:
+    - kota65535.rbenv
+```
+
+### 2. Multiple users, global profile
+
+- Install rbenv for multiple users test01, test02
+- Install ruby the latest version of jruby-9
+- Crerate /etc/profile.d/rbenv.sh to initialize rbenv for all users
+
+```
+- hosts: all
+  vars:
+    rbenv_ruby_versions:
+      - jruby-9.X.X.X
+    rbenv_profile_path: /etc/profile.d/rbenv.sh
+    rbenv_profile_owner: root
+    rbenv_users:
+      - test01
+      - test02
+  roles:
+    - kota65535.rbenv
+```
+
+### 3. Multiple users, personal profiles
+
+- Install rbenv for multiple users test01, test02
+- Install ruby the latest version of jruby-9
+- Add lines to ~/.bashrc of each users to initialize pyenv
+
+```
+- hosts: all
+  vars:
+    rbenv_ruby_versions:
+      - jruby-9.X.X.X
+    rbenv_profile_path: ~/.bashrc
+    rbenv_users:
+      - test01
+      - test02
+  roles:
+    - kota65535.rbenv
+```
 
 
 License
