@@ -28,16 +28,12 @@ Role variables you may want to change:
 * `rbenv_plugins` - Array of Hashes with information about plugins to install
 * `default_gems_file` - This is Rbenv's plugin _rbenv-default-gems_. Sets the path to a default-gems file of your choice (_don't set it_ if you want to use the default file `files/default-gems`)
 
-You can use `x` as the latest version number to specify ruby version (ex. `2.3.x`).
+You can use `X` as the latest version number to specify ruby version (ex. `2.3.X`).
 
 The default values:
 
 ```
-rbenv_users: ["{{ ansible_env.USER }}"]
-rbenv_ruby_versions: ["2.x.x"]
-
 rbenv_root: "~/.rbenv"
-rbenv_profile_path: "/etc/profile.d/rbenv.sh"
 
 rbenv_repo: "https://github.com/rbenv/rbenv.git"
 rbenv_plugins:
@@ -65,7 +61,7 @@ Example Playbook
       vars:
         rbenv_ruby_versions:
           - 2.0.0
-          - 2.3.x
+          - 2.3.X
         rbenv_users:
           - test01
           - test02
