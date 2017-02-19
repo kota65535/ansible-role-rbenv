@@ -1,11 +1,14 @@
 #!/bin/sh
 
 tmpdir=$(mktemp -d /tmp/XXXX)
-git clone -q $1 ${tmpdir}
-git clone -q $2 ${tmpdir}/plugins/ruby-build
-export RBENV_ROOT=${tmpdir}
-export PATH="$RBENV_ROOT/bin:$PATH"
-eval "$(${RBENV_ROOT}/bin/rbenv init -)"
+if ! which -s rbenv; then
+    # If rbenv is not installed, clone repository and set path
+    git clone -q $1 ${tmpdir}
+    git clone -q $2 ${tmpdir}/plugins/ruby-build
+    export RBENV_ROOT=${tmpdir}
+    export PATH="$RBENV_ROOT/bin:$PATH"
+    eval "$(${RBENV_ROOT}/bin/rbenv init -)"
+fi
 
 # Make regex pattern by replacing 'x' with \d
 version_regex_str=$(echo "$3" | perl -pe 's/X/\\d+/g; s/\./\\./g')

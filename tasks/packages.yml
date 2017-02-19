@@ -52,4 +52,15 @@
     - libsort-versions-perl
   become: true
   when: ansible_pkg_mgr == 'apt'
-
+- name: Install development packages to compile Python versions (MacOSX)
+  package: name={{item}} state=present update_cache=yes
+  with_items:
+    - openssl
+    - libyaml
+    - libffi
+    - perl
+  when: "'MacOSX' in ansible_os_family"
+  become: yes
+- name: Install development packages to compile Python versions (MacOSX)
+  cpanm: name="Sort::Versions"
+  become: yes
