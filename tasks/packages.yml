@@ -53,15 +53,15 @@
   become: true
   when: ansible_pkg_mgr == 'apt'
 - name: Install development packages to compile Python versions (MacOSX)
-  package: name={{item}} state=present update_cache=yes
+  homebrew: name={{item}} state=present update_homebrew=yes
   with_items:
     - openssl
     - libyaml
     - libffi
     - perl
-  when: "'MacOSX' in ansible_os_family"
-  become: yes
+    - cpanminus
+  when: ansible_distribution == 'MacOSX'
 - name: Install development packages to compile Python versions (MacOSX)
   cpanm: name="Sort::Versions"
-  when: "'MacOSX' in ansible_os_family"
   become: yes
+  when: ansible_distribution == 'MacOSX'
