@@ -25,6 +25,7 @@
     # group: root
     mode: 0644
     create: yes
+    marker: "# {mark} ANSIBLE MANAGED BLOCK by kota65535.rbenv"
   become: yes
   become_user: "{{ rbenv_profile_owner }}"
   when: rbenv_profile_owner is defined
@@ -37,6 +38,7 @@
     # group: root
     mode: 0644
     create: yes
+    marker: "# {mark} ANSIBLE MANAGED BLOCK by kota65535.rbenv"
   when: rbenv_profile_owner is not defined
 
 - name: Set default-gems
