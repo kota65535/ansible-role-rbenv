@@ -1,7 +1,8 @@
 #!/bin/sh
 
 tmpdir=$(mktemp -d /tmp/XXXX)
-if ! which -s rbenv; then
+which rbenv > /dev/null
+if $? -ne 0; then
     # If rbenv is not installed, clone repository and set path
     git clone -q $1 ${tmpdir}
     git clone -q $2 ${tmpdir}/plugins/ruby-build
